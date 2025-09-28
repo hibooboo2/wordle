@@ -235,28 +235,37 @@ function pickRandomWord() {
     const guess = board[curRow].join('').toLowerCase();
     if(!VALID.has(guess)){ showMessage('Not in word list: ['+guess+']'); return; }
     // evaluate
-    const evaluation = evaluateGuess(guess,solution);
+    const evaluation = evaluateGuess(guess.toLowerCase(),solution.toLowerCase());
     status[curRow] = evaluation;
     flipRow(curRow, evaluation);
   }
-
-  function evaluateGuess(guess,sol){
-    // return array of statuses per letter
-    const result = Array(COLS).fill('absent');
-    const solArr = sol.split('');
-    const guessArr = guess.split('');
-    // first pass correct
-    for(let i=0;i<COLS;i++){
-      if(guessArr[i] === solArr[i]){ result[i]='correct'; solArr[i]=null; }
+  function evaluateGuess(guess, solution) {
+  const result = Array(guess.length).fill('absent'); // default gray
+  const solutionLetters = solution.split('');
+console.log(guess,solution);
+// 1️⃣ Mark correct positions (green)
+for (let i = 0; i < guess.length; i++) {
+  if (guess[i] === solution[i]) {
+    result[i] = 'correct';
+    solutionLetters[i] = null; // remove matched letter
+    console.log(result);  
     }
-    // second pass present
-    for(let i=0;i<COLS;i++){
-      if(result[i] === 'correct') continue;
-      const idx = solArr.indexOf(guessArr[i]);
-      if(idx !== -1){ result[i] = 'present'; solArr[idx] = null; }
-    }
-    return result;
   }
+
+  // 2️⃣ Mark present letters (yellow)
+  for (let i = 0; i < guess.length; i++) {
+    if (result[i] === 'correct') continue;
+
+    const index = solutionLetters.indexOf(guess[i]);
+    if (index !== -1) {
+      result[i] = 'present';
+      solutionLetters[index] = null; // remove this instance
+    }
+  }
+
+  return result;
+}
+
 function flipRow(r, evaluation) {
   for (let c = 0; c < COLS; c++) {
     const tile = document.getElementById(`tile-${r}-${c}`);
