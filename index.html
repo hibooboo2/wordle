@@ -12,18 +12,95 @@
     }
     html,body{height:100%;}
     body{margin:0; background:var(--bg); color:var(--text); display:flex;align-items:center;justify-content:center;padding:24px}
-    .container{max-width:700px;width:100%}
+    .container{
+      width:80%;
+      height:100%;
+  border: 1px solid var(--tile);
+    
+    }
     h1{font-weight:700;margin:0 0 12px 0;text-align:center}
-    .board{display:grid;grid-template-rows:repeat(6,1fr);gap:8px;margin:18px auto;max-width:480px}
-    .row{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
-    .tile{aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1.4rem;border-radius:6px;background:var(--tile);color:var(--text);text-transform:uppercase;user-select:none}
+
+    .board {
+  display: grid;
+  grid-template-rows: repeat(6, 1fr);
+  gap: 8px;
+  margin: 24px auto;
+  width: 350px;      /*fixed width for desktop*/
+  max-width: 90vw;   /* allow shrink on small screens */
+}
+
+.tile {
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 32px;  /* bigger size for readability */
+  border-radius: 6px;
+  background: var(--tile);
+  color: var(--text);
+  text-transform: uppercase;
+  user-select: none;
+}
+
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1vw;
+}
+
+
+
     .tile.filled{border:2px solid rgba(255,255,255,0.05)}
     .tile.flip{animation:flip 450ms ease forwards}
     @keyframes flip{0%{transform:rotateX(0deg)}50%{transform:rotateX(90deg);background:var(--tile)}100%{transform:rotateX(0deg)}}
+.keyboard {
+  margin: 12px auto;
+  display: flex;
+  flex-direction: column;
+  max-width: 90vw;
+  gap: 8px;
+}
 
-    .keyboard{margin:12px auto;max-width:560px;display:flex;flex-direction:column;gap:8px}
-    .kb-row{display:flex;gap:8px;justify-content:center}
-    .key{padding:12px 10px;border-radius:6px;background:var(--kbd);min-width:40px;text-align:center;font-weight:700;cursor:pointer;user-select:none}
+.kb-row {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+
+.kb-row[data-cols] .key {
+  flex: 1 1 auto;
+  min-width: 50px;   /* readable key size */
+  padding: 12px 0;
+  font-size: 18px;
+  text-align: center;
+  border-radius: 6px;
+  box-sizing: border-box;
+}
+
+.kb-row[data-cols] .key.big {
+  flex: 1.5 1 auto;  /* ENTER/BACK are 1.5x wider */
+  min-width: 75px;
+}
+
+
+
+/* visual key styles (keep your previous ones) */
+.key{
+  border-radius:6px;
+  font-weight:700;
+  cursor:pointer;
+  user-select:none;
+  background:var(--kbd);
+  color:var(--text);
+  font-size: 2em;
+  width: 2em;
+  text-align: center;
+}
+
     .key.big{min-width:64px}
     .key.locked{opacity:0.5;pointer-events:none}
     .key.correct{background:var(--green);color:white}
@@ -117,7 +194,7 @@ const ANSWERS = ['aahed','aalii','aapas','aargh','aarti','abaca','abaci','aback'
     KBD.forEach((row,ri)=>{
       const r = document.createElement('div'); r.className='kb-row';
       if(ri===2){
-        const enter = makeKey('ENTER','big'); r.appendChild(enter);
+        const enter = makeKey('↩️','big'); r.appendChild(enter);
       }
       row.split('').forEach(ch=>{
         const k = makeKey(ch);
