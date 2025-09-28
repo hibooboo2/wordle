@@ -153,17 +153,15 @@ const ANSWERS = ['aahed','aalii','aapas','aargh','aarti','abaca','abaci','aback'
   // For simplicity, guesses allowed are same as answers in this demo.
   const VALID = new Set(ANSWERS);
 
-  // choose word based on date to mimic daily puzzle
-  function getDailyWord(){
-    const epoch = new Date(Date.UTC(2021,5,19)); // arbitrary epoch
-    const today = new Date();
-    const diffDays = Math.floor((Date.UTC(today.getUTCFullYear(),today.getUTCMonth(),today.getUTCDate()) - epoch.getTime())/86400000);
-    return ANSWERS[diffDays % ANSWERS.length];
-  }
+// Pick a random word from ANSWERS
+function pickRandomWord() {
+  const idx = Math.floor(Math.random() * ANSWERS.length);
+  return ANSWERS[idx].toUpperCase();
+}
 
   // game state
   const ROWS = 6, COLS = 5;
-  let solution = getDailyWord();
+  let solution = pickRandomWord();
   let curRow = 0, curCol = 0;
   let board = Array.from({length:ROWS},()=>Array.from({length:COLS},()=>""));
   let status = Array.from({length:ROWS},()=>Array.from({length:COLS},()=>"")); // "correct","present","absent"
